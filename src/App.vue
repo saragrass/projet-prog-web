@@ -150,9 +150,15 @@ export default {
       localStorage.setItem('artworks', JSON.stringify(this.artworks));
     },
     updateVisibleArtworks() {
+      const filtered = this.artworks.filter(artwork =>
+        (!this.selectedArtist || artwork.artist_display === this.selectedArtist) &&
+        (!this.selectedDate || artwork.date_display === this.selectedDate) &&
+        (!this.selectedCountry || artwork.place_of_origin === this.selectedCountry) &&
+        (!this.selectedType || artwork.artwork_type_title === this.selectedType)
+      );
       const startIndex = this.visibleArtworks.length;
       const endIndex = Math.min(startIndex + this.pageSize, this.artworks.length);
-      this.visibleArtworks = this.artworks.slice(0, endIndex);
+      this.visibleArtworks = filtered.slice(0, endIndex);
     },
     loadMoreArtworks() {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
